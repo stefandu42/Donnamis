@@ -1,0 +1,91 @@
+### disconnect
+GET {{baseUri}}/falseroute
+Content-Type: application/json
+
+> {%
+client.global.clearAll()
+%}
+
+### login valid
+POST {{baseUri}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "bazz",
+  "password": "Mdpuser.1",
+  "rememberMe": true
+}
+> {%
+client.global.set("access", response.body.access_token);
+client.global.set("refresh", response.body.refresh_token);
+%}
+
+### login valid 2
+POST {{baseUri}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "GaspardDePorto",
+  "password": "gaspardLeLeopard",
+  "rememberMe": true
+}
+> {%
+client.global.set("access", response.body.access_token);
+client.global.set("refresh", response.body.refresh_token);
+%}
+
+### login refused member
+POST {{baseUri}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "JoshuaDeMadrid",
+  "password": "joshuaLeCanard",
+  "rememberMe": true
+}
+
+### login pending member
+POST {{baseUri}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "MarcDeBruxelles",
+  "password": "marcLeLoup",
+  "rememberMe": true
+}
+
+### Refresh token
+GET {{baseUri}}/auth/refreshToken
+Authorization: {{refresh}}
+
+> {%
+client.global.set("access", response.body.access_token);
+%}
+
+### Get user by his token
+GET {{baseUri}}/member/getMemberByToken
+Authorization: {{access}}
+
+
+### register valid
+POST {{baseUri}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "stefanenculé",
+  "lastname": "test",
+  "firstname": "test",
+  "password": "test123",
+  "phone": "0498989898",
+  "address": {
+    "buildingNumber": "14",
+    "street": "Rue du cheval",
+    "postcode": "1140",
+    "commune": "Evere"
+  }
+}
+> {%
+client.global.set("access", response.body.access_token);
+client.global.set("refresh", response.body.refresh_token);
+%}
+
